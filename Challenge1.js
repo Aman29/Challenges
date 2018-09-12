@@ -11,17 +11,17 @@ let initial_state = [
 
 console.log("========initial_state=============", initial_state);
 
-let newtile = Math.random() < 0.9 ? 2 : 4;
+let new_tile = Math.random() < 0.9 ? 2 : 4;
 
-let placenew = (board) => {
-    console.log("===========newtile==========", newtile);
+let placeNew = (board) => {
+    console.log("===========new_tile==========", new_tile);
 
     let tiles = [];
     let availableTiles = function () {
-        board.forEach(function(row, xindex) {
-            board.forEach(function(column, yindex){
-                if (! board[xindex][yindex]) {
-                    tiles.push({xindex : xindex, yindex: yindex});
+        board.forEach(function(row, x_index) {
+            board.forEach(function(column, y_index){
+                if (! board[x_index][y_index]) {
+                    tiles.push({x_index : x_index, y_index: y_index});
                 }
             });
         });
@@ -32,17 +32,17 @@ let placenew = (board) => {
         return -1;
     }
     else {
-        let randomTile = [];
+        let random_tile = [];
         let randomAvailableTile = function () {
-            randomTile = tiles[Math.floor(Math.random() * tiles.length)];
-            board[randomTile.xindex][randomTile.yindex] = newtile;
+            random_tile = tiles[Math.floor(Math.random() * tiles.length)];
+            board[random_tile.x_index][random_tile.y_index] = new_tile;
             return board;
         };
         return randomAvailableTile();
     }
 };
 
-let new_state = placenew(initial_state);
+let new_state = placeNew(initial_state);
 
 if (new_state === -1)
     console.log("====No tiles available====", initial_state);

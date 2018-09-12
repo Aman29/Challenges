@@ -16,14 +16,14 @@ let swipe = (board, direction) => {
 
     let doUp = function() {
         for (let increment = 0; increment < board.length; increment++) {
-            for (let xindex = 0; xindex < board.length; xindex++) {
-                for (let yindex = increment; yindex == increment; yindex++) {
-                    let nextIndex = (xindex + 1) >= board.length ? xindex : (xindex+1);
-                    if (0 !== board[xindex][yindex]) {
-                        if (xindex !== nextIndex) {
-                            if (board[xindex][yindex] === board[nextIndex][yindex]) {
-                                board[xindex][yindex] = board[xindex][yindex] * 2;
-                                board[nextIndex][yindex] = 0;
+            for (let x_index = 0; x_index < board.length; x_index++) {
+                for (let y_index = increment; y_index == increment; y_index++) {
+                    let next_index = (x_index + 1) >= board.length ? x_index : (x_index+1);
+                    if (0 !== board[x_index][y_index]) {
+                        if (x_index !== next_index) {
+                            if (board[x_index][y_index] === board[next_index][y_index]) {
+                                board[x_index][y_index] = board[x_index][y_index] * 2;
+                                board[next_index][y_index] = 0;
                             }
                         }
                     }
@@ -36,13 +36,13 @@ let swipe = (board, direction) => {
 
     let arrangeTiles =  function () {
         for (let increment = 0; increment < board.length; increment++) {
-            for (let xindex = 0; xindex < board.length; xindex++) {
-                for (let yindex = increment; yindex == increment; yindex++) {
-                    let nextIndex = (xindex + 1) >= board.length ? xindex : (xindex+1);
-                    if (0 === board[xindex][yindex]) {
-                        if (0 !== board[nextIndex][yindex]) {
-                            board[xindex][yindex] = board[nextIndex][yindex];
-                            board[nextIndex][yindex] = 0;
+            for (let x_index = 0; x_index < board.length; x_index++) {
+                for (let y_index = increment; y_index == increment; y_index++) {
+                    let next_index = (x_index + 1) >= board.length ? x_index : (x_index+1);
+                    if (0 === board[x_index][y_index]) {
+                        if (0 !== board[next_index][y_index]) {
+                            board[x_index][y_index] = board[next_index][y_index];
+                            board[next_index][y_index] = 0;
                         }
                     }
                 }

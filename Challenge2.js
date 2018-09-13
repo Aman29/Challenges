@@ -3,46 +3,115 @@
 'use-strict';
 
 let initial_state = [
-    [8, 0, 0, 0],
+    [8, 0, 0, 8],
     [4, 2, 0, 0],
-    [4, 0, 4, 0],
-    [2, 0, 4, 0],
+    [4, 0, 4, 4],
+    [2, 0, 4, 2],
 ];
-let direction = "UP";
+
+let direction = "LEFT";
 
 console.log("=========initial_state==========", initial_state);
 
 let swipe = (board, direction) => {
 
-    let doUp = function() {
+    // For UP and DOWN movement of tile.
+    let moveTileVertical = function() {
         for (let increment = 0; increment < board.length; increment++) {
-            for (let x_index = 0; x_index < board.length; x_index++) {
-                for (let y_index = increment; y_index == increment; y_index++) {
-                    let next_index = (x_index + 1) >= board.length ? x_index : (x_index+1);
-                    if (0 !== board[x_index][y_index]) {
-                        if (x_index !== next_index) {
-                            if (board[x_index][y_index] === board[next_index][y_index]) {
-                                board[x_index][y_index] = board[x_index][y_index] * 2;
-                                board[next_index][y_index] = 0;
+            for (let row = 0; row < board.length; row++) {
+                for (let column = increment; column == increment; column++) {
+                    let next_index = (row + 1) >= board.length ? row : (row+1);
+                    if (0 !== board[row][column]) {
+                        if (0 == board[row][next_index]) {
+                            next_index = (row + 2) >= board.length ? row : (row+2);
+                            if (0 == board[row][next_index]) {
+                                next_index = (row + 3) >= board.length ? row : (row+3);
+                                mergingVertical(row, column, next_index);
+                            } else {
+                                mergingVertical(row, column, next_index);
                             }
+                        } else {
+                            mergingVertical(row, column, next_index);
                         }
                     }
                 }
             }
-            arrangeTiles();
+            arrangeTilesVertical();
         }
         return board;
     };
 
-    let arrangeTiles =  function () {
+    let arrangeTilesVertical =  function () {
         for (let increment = 0; increment < board.length; increment++) {
-            for (let x_index = 0; x_index < board.length; x_index++) {
-                for (let y_index = increment; y_index == increment; y_index++) {
-                    let next_index = (x_index + 1) >= board.length ? x_index : (x_index+1);
-                    if (0 === board[x_index][y_index]) {
-                        if (0 !== board[next_index][y_index]) {
-                            board[x_index][y_index] = board[next_index][y_index];
-                            board[next_index][y_index] = 0;
+            for (let row = 0; row < board.length; row++) {
+                for (let column = increment; column == increment; column++) {
+                    let next_index = (row + 1) >= board.length ? row : (row+1);
+                    if (0 === board[row][column]) {
+                        if (0 !== board[next_index][column]) {
+                            board[row][column] = board[next_index][column];
+                            board[next_index][column] = 0;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    let mergingVertical = (row, column, next_index) => {
+        if (column !== next_index) {
+            if (board[row][column] === board[next_index][column]) {
+                board[row][column] = board[row][column] * 2;
+                board[next_index][column] = 0;
+
+            }
+        }
+    };
+
+    // For LEFT and RIGHT movement of the tile.
+    let moveTileHorizontal = function() {
+        for (let increment = 0; increment < board.length; increment++) {
+            for (let row = increment; row == increment; row++) {
+                for (let column = 0; column < board.length; column++) {
+                    let next_index = (column + 1) >= board.length ? column : (column+1);
+                    if (0 !== board[row][column]) {
+                        if (0 == board[row][next_index]) {
+                            next_index = (column + 2) >= board.length ? column : (column+2);
+                            if (0 == board[row][next_index]) {
+                                next_index = (column + 3) >= board.length ? column : (column+3);
+                                mergingHorizontal(row, column, next_index);
+                            } else {
+                                mergingHorizontal(row, column, next_index);
+                            }
+                        } else {
+                            mergingHorizontal(row, column, next_index);
+                        }
+                    }
+                }
+            }
+            arrangeTilesHorizontal();
+        }
+        return board;
+    };
+
+    let mergingHorizontal = (row, column, next_index) => {
+        if (column !== next_index) {
+            if (board[row][column] === board[row][next_index]) {
+                board[row][column] = board[row][column] * 2;
+                board[row][next_index] = 0;
+
+            }
+        }
+    };
+
+    let arrangeTilesHorizontal =  function () {
+        for (let increment = 0; increment < board.length; increment++) {
+            for (let row = increment; row == increment; row++) {
+                for (let column = 0; column < board.length; column++) {
+                    let next_index = (column + 1) >= board.length ? column : (column+1);
+                    if (0 === board[row][column]) {
+                        if (0 !== board[row][next_index]) {
+                            board[row][column] = board[row][next_index];
+                            board[row][next_index] = 0;
                         }
                     }
                 }
@@ -51,9 +120,26 @@ let swipe = (board, direction) => {
     };
 
     if ("UP" === direction) {
-        let afterUpMove = doUp();
+        let afterUpMove = moveTileVertical();
         return afterUpMove;
+    } else if ("DOWN" === direction) {
+        board.reverse();
+        let afterDownMove = moveTileVertical();
+        return afterDownMove.reverse();
+    } else if ("LEFT" === direction) {
+        let afterLeftMove = moveTileHorizontal();
+        return afterLeftMove;
+    } else if ("RIGHT" === direction) {
+        board.forEach(function (row) {
+            row.reverse();
+        });
+        let afterRightMove = moveTileHorizontal();
+        afterRightMove.forEach(function (row) {
+            row.reverse();
+        })
+        return afterRightMove;
     }
+
 };
 
 let updated_state = swipe(initial_state, direction);

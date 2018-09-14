@@ -2,18 +2,13 @@
 
 'use-strict';
 
-let new_tile = Math.random() < 0.9 ? 2 : 4;
-
 let placeNew = (board) => {
-  console.log("===========new_tile==========", new_tile);
-
+  let new_tile = Math.random() < 0.9 ? 2 : 4;
   let tiles = [];
   let availableTiles = function () {
-    console.log("=====================");
     board.forEach(function(row, x_index) {
       board.forEach(function(column, y_index){
         if (! board[x_index][y_index]) {
-          console.log("=========in============");
           tiles.push({x_index : x_index, y_index: y_index});
         }
       });

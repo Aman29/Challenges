@@ -7,7 +7,10 @@
             <label v-if="tileValue > 0">{{tileValue}}</label>
           </div>
         </div>
-        <button class="addButton" @click="addTile()">Add Tile</button>
+        <button class="addButton" @click="moveLeft()">Move Left</button>
+        <button class="addButton" @click="moveUp()">Move Up</button>
+        <button class="addButton" @click="moveRight()">Move Right</button>
+        <button class="addButton" @click="moveDown()">Move Down</button>
       </div>
       <div v-else>
         <div class="overlay"> Game Over</div>
@@ -18,6 +21,7 @@
 
 <script>
 import placeNew from '../game';
+import swipe from '../tileMovement';
 let initial_state = [
   [8, 0, 0, 0],
   [4, 2, 0, 0],
@@ -35,7 +39,7 @@ export default {
     }
   },
   methods: {
-    addTile() {
+    addTile(new_state) {
       let current_state = placeNew(new_state);
       if (-1 == current_state) {
         this.gameOver = true;
@@ -50,6 +54,55 @@ export default {
         this.new_state = array;
       }
     },
+    moveLeft() {
+      let direction = "LEFT";
+      let array = [];
+      let current_state = swipe(this.new_state, direction);
+      current_state.forEach(function(element) {
+        let elementObject = Object.assign({}, element);
+
+        let arr = Object.keys(elementObject).map(i => elementObject[i]);
+        array.push(arr);
+      });
+      this.new_state = array;
+      this.addTile(this.new_state);
+    },
+    moveRight() {
+      let direction = "RIGHT";
+      let array = [];
+      let current_state = swipe(this.new_state, direction);
+      current_state.forEach(function(element) {
+        let elementObject = Object.assign({}, element);
+        let arr = Object.keys(elementObject).map(i => elementObject[i]);
+        array.push(arr);
+      });
+      this.new_state = array;
+      this.addTile(this.new_state);
+    },
+    moveDown() {
+      let direction = "DOWN";
+      let array = [];
+      let current_state = swipe(this.new_state, direction);
+      current_state.forEach(function(element) {
+        let elementObject = Object.assign({}, element);
+        let arr = Object.keys(elementObject).map(i => elementObject[i]);
+        array.push(arr);
+      });
+      this.new_state = array;
+      this.addTile(this.new_state);
+    },
+    moveUp() {
+      let direction = "UP";
+      let array = [];
+      let current_state = swipe(this.new_state, direction);
+      current_state.forEach(function(element) {
+        let elementObject = Object.assign({}, element);
+        let arr = Object.keys(elementObject).map(i => elementObject[i]);
+        array.push(arr);
+      });
+      this.new_state = array;
+      this.addTile(this.new_state);
+    }
   }
 }
 </script>

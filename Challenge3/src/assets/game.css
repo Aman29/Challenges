@@ -110,5 +110,15 @@
   background-color: #ffac2d;
   border-color: black;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: 18px;
+}
+
+.refreshButton {
+  width: 100px;
+  height: 40px;
+  margin-top: 30px;
+  background-color: #ffac2d;
+  border-color: black;
+  border-radius: 10px;
+  font-size: 15px;
 }

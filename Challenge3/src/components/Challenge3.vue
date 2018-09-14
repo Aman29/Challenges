@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button class="refreshButton" @click="refresh()">Refresh</button>
     <div class="border">
       <div v-if="!gameOver">
         <div v-for="(data, index) in new_state">
@@ -23,10 +24,10 @@
 import placeNew from '../game';
 import swipe from '../tileMovement';
 let initial_state = [
-  [8, 0, 0, 0],
-  [4, 2, 0, 0],
-  [4, 0, 4, 0],
-  [2, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 2, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
 ];
 let new_state = placeNew(initial_state);
 export default {
@@ -55,53 +56,36 @@ export default {
       }
     },
     moveLeft() {
-      let direction = "LEFT";
-      let array = [];
-      let current_state = swipe(this.new_state, direction);
-      current_state.forEach(function(element) {
-        let elementObject = Object.assign({}, element);
-
-        let arr = Object.keys(elementObject).map(i => elementObject[i]);
-        array.push(arr);
-      });
-      this.new_state = array;
+      let current_state = swipe(this.new_state, "LEFT");
+      this.removeObserve(current_state);
       this.addTile(this.new_state);
     },
     moveRight() {
-      let direction = "RIGHT";
-      let array = [];
-      let current_state = swipe(this.new_state, direction);
-      current_state.forEach(function(element) {
-        let elementObject = Object.assign({}, element);
-        let arr = Object.keys(elementObject).map(i => elementObject[i]);
-        array.push(arr);
-      });
-      this.new_state = array;
+      let current_state = swipe(this.new_state, "RIGHT")
+      this.removeObserve(current_state);
       this.addTile(this.new_state);
     },
     moveDown() {
-      let direction = "DOWN";
-      let array = [];
-      let current_state = swipe(this.new_state, direction);
-      current_state.forEach(function(element) {
-        let elementObject = Object.assign({}, element);
-        let arr = Object.keys(elementObject).map(i => elementObject[i]);
-        array.push(arr);
-      });
-      this.new_state = array;
+      let current_state = swipe(this.new_state, "DOWN");
+      this.removeObserve(current_state);
       this.addTile(this.new_state);
     },
     moveUp() {
-      let direction = "UP";
+      let current_state = swipe(this.new_state, "UP");
+      this.removeObserve(current_state);
+      this.addTile(this.new_state);
+    },
+    refresh() {
+      this.new_state = initial_state;
+    },
+    removeObserve(current_state) {
       let array = [];
-      let current_state = swipe(this.new_state, direction);
       current_state.forEach(function(element) {
         let elementObject = Object.assign({}, element);
         let arr = Object.keys(elementObject).map(i => elementObject[i]);
         array.push(arr);
       });
       this.new_state = array;
-      this.addTile(this.new_state);
     }
   }
 }

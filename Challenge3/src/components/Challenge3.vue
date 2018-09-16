@@ -66,8 +66,12 @@ export default {
       this.addTile(this.new_state);
     },
     moveDown() {
+      //let old_state = [...this.new_state];
       let current_state = swipe(this.new_state, "DOWN");
       this.removeObserve(current_state);
+      // if (JSON.stringify(old_state) === JSON.stringify(this.new_state)) {
+      //   this.addTile(this.new_state);
+      // }
       this.addTile(this.new_state);
     },
     moveUp() {
@@ -77,6 +81,7 @@ export default {
     },
     refresh() {
       this.new_state = initial_state;
+      this.gameOver = false;
     },
     removeObserve(current_state) {
       let array = [];

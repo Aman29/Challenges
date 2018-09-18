@@ -8,10 +8,6 @@
             <label v-if="tileValue > 0">{{tileValue}}</label>
           </div>
         </div>
-        <button class="addButton" @click="moveLeft()">Move Left</button>
-        <button class="addButton" @click="moveUp()">Move Up</button>
-        <button class="addButton" @click="moveRight()">Move Right</button>
-        <button class="addButton" @click="moveDown()">Move Down</button>
       </div>
       <div v-else>
         <div class="overlay"> Game Over</div>
@@ -30,8 +26,30 @@ let initial_state = [
   [0, 0, 0, 0],
 ];
 let new_state = placeNew(initial_state);
+
 export default {
   name: 'Challenge3',
+  created() {
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode == '37') {
+        let current_state = swipe(this.new_state, "LEFT");
+        this.removeObserve(current_state);
+        this.addTile(this.new_state);
+      } else if (e.keyCode == '38') {
+        let current_state = swipe(this.new_state, "UP");
+        this.removeObserve(current_state);
+        this.addTile(this.new_state);
+      } else if (e.keyCode == '39') {
+        let current_state = swipe(this.new_state, "RIGHT")
+        this.removeObserve(current_state);
+        this.addTile(this.new_state);
+      } else if (e.keyCode == '40') {
+        let current_state = swipe(this.new_state, "DOWN");
+        this.removeObserve(current_state);
+        this.addTile(this.new_state);
+      }
+    });
+  },
   data () {
     return {
       new_state : new_state,
@@ -54,30 +72,6 @@ export default {
         });
         this.new_state = array;
       }
-    },
-    moveLeft() {
-      let current_state = swipe(this.new_state, "LEFT");
-      this.removeObserve(current_state);
-      this.addTile(this.new_state);
-    },
-    moveRight() {
-      let current_state = swipe(this.new_state, "RIGHT")
-      this.removeObserve(current_state);
-      this.addTile(this.new_state);
-    },
-    moveDown() {
-      //let old_state = [...this.new_state];
-      let current_state = swipe(this.new_state, "DOWN");
-      this.removeObserve(current_state);
-      // if (JSON.stringify(old_state) === JSON.stringify(this.new_state)) {
-      //   this.addTile(this.new_state);
-      // }
-      this.addTile(this.new_state);
-    },
-    moveUp() {
-      let current_state = swipe(this.new_state, "UP");
-      this.removeObserve(current_state);
-      this.addTile(this.new_state);
     },
     refresh() {
       this.new_state = initial_state;
